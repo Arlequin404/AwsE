@@ -13,18 +13,11 @@ jobs:
     - name: Check out the code
       uses: actions/checkout@v3
 
-    - name: Deploy to EC2
-      uses: easingthemes/ssh-deploy@main
-      env:
-        SSH_PRIVATE_KEY: ${{ secrets.EC2_SSH_KEY }}
-        REMOTE_HOST: ${{ secrets.HOST_DNS }}
-        REMOTE_USER: ${{ secrets.EC2_USER }}
-        TARGET: ${{ secrets.TARGET_DIR }}
-
-    - name: Executing remote ssh commands using ssh key
+    - name: Deploy to EC2 instances
       uses: appleboy/ssh-action@master
       with:
-        host: ${{ secrets.HOST_DNS }}
+        # Agregar las IPs de las dos instancias EC2 separadas por comas
+        hosts: ${{ secrets.EC2_HOSTS }} 
         username: ${{ secrets.EC2_USER }}
         key: ${{ secrets.EC2_SSH_KEY }}
         script: |
